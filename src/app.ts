@@ -30,6 +30,7 @@ class App {
 
     private mongoSetup(): void{
         const mongoose = require('mongoose');
+        mongoose.set('useFindAndModify', false);
 
         mongoose.connect('mongodb://localhost:27017/bd_test', { useNewUrlParser: true })
         .then(() => console.log('Successful connection...'))
