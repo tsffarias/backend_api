@@ -1,19 +1,21 @@
 import * as mongoose from 'mongoose';
 import { StudentSchema } from '../models/student';
 import { Request, Response } from 'express';
+import { APIError, PublicInfo } from '../shared/messages';
 
 const StudentMongooseModel = mongoose.model('Student', StudentSchema);
 
 export class StudentController { 
 
-    public addNewStudent (req: Request, res: Response) {                
+    public addNewStudent (req: Request, res: Response) { 
+            
         let newStudent = new StudentMongooseModel(req.body);
 
-       newStudent.save((err, data) => {
+        newStudent.save((err, data) => {
             if (err){
                 res.send(err);
             }    
-            res.json(data);
+            res.json(PublicInfo.infoCreated({ data: data }));
         });
     }
 
@@ -41,7 +43,7 @@ export class StudentController {
             if (err){
                 res.send(err);
             }
-            res.json(data);
+            res.json(PublicInfo.infoUpdated({data: data}));
         });
     }
 
@@ -50,7 +52,7 @@ export class StudentController {
             if (err){
                 res.send(err);
             }
-            res.json({ message: 'Successfully deleted student!'});
+            res.json(PublicInfo.infoDeleted());
         });
     }
 
