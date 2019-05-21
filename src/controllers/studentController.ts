@@ -13,7 +13,9 @@ export class StudentController {
 
         newStudent.save((err, data) => {
             if (err){
-                res.send(err);
+                if (err.name === 'ValidationError') {
+                    return res.send(APIError.errMissingBody());
+                }
             }    
             res.json(PublicInfo.infoCreated({ data: data }));
         });
