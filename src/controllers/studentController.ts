@@ -64,27 +64,27 @@ export class StudentController {
             "FirstName":"Sally",
             "LastName":"Baker",
             "School":"Mining",
-            "StartDate": new Date("2012-02-20T08:30:00")
+            "StartDate": new Date(Date.now())
             },{
             "FirstName":"Jason",
             "LastName":"Plumber",
             "School":"Engineering",
-            "StartDate": new Date("2018-03-17T17:32:00")
+            "StartDate": new Date(Date.now())
             },{
             "FirstName":"Sue",
             "LastName":"Gardner",
             "School":"Political Science",
-            "StartDate": new Date("2014-06-20T08:30:00")
+            "StartDate": new Date(Date.now())
             },{
             "FirstName":"Linda",
             "LastName":"Farmer",
             "School":"Agriculture",
-            "StartDate": new Date("2014-06-20T08:30:00")
+            "StartDate": new Date(Date.now())
             },{
             "FirstName":"Fred",
             "LastName":"Fisher",
             "School":"Environmental Sciences",
-            "StartDate": new Date("2017-10-16T17:32:00")
+            "StartDate": new Date(Date.now())
             }
         ];
           
