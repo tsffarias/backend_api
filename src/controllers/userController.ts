@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { UserSchema } from '../models/user';
 import { Request, Response } from 'express';
 import { APIError, PublicInfo } from '../shared/messages';
+import { validationResult } from 'express-validator/check';
 
 const UserMongooseModel = mongoose.model('User', UserSchema);
 
@@ -9,7 +10,14 @@ export class UserController {
 
     // Create a new user
     public addNewUser (req: Request, res: Response) { 
-            
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            // return res.send(APIError.errInvalidQueryParameter());
+            // Show the specific validation error
+            return res.status(422).json({ errors: errors.array() });
+        }
+
         let newUser = new UserMongooseModel(req.body);
 
         newUser.save((err, data) => {
@@ -99,7 +107,8 @@ export class UserController {
     }
 
     // Update a specific user
-    public updateUser (req: Request, res: Response) {           
+    public updateUser (req: Request, res: Response) {  
+
         UserMongooseModel.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, 
             (err, data) => {
             if (err){
