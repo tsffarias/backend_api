@@ -11,6 +11,7 @@ $ npm install
 ```
 
 ```sh
+# run api dev mode
 $ npm run dev
 # build project
 $ npm run build

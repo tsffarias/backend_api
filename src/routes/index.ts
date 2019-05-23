@@ -38,15 +38,30 @@ export class Routes {
 
         // Get a specific user by cpf
         app.route('/api/getuserbycpf/:cpf')
-            .get(this.userController.getUserByCpf);
+            .get([
+                // cpf must be at least 11 chars long and 14 chars max
+                check('cpf').isLength({ min: 11, max: 14 }).trim()
+            ], this.userController.getUserByCpf);
 
         // Get a specific user by email
         app.route('/api/getuserbyemail/:email')
-            .get(this.userController.getUserByEmail);
+            .get([
+                // email must be an email
+                check('email').isEmail().normalizeEmail().trim()
+            ], this.userController.getUserByEmail);
 
         // Update a specific user
         app.route('/api/users/:userId')
-            .put(this.userController.updateUser);
+            .put([
+                // name must be at least 3 chars long and 30 chars max
+                check('name').isLength({ min: 3, max: 30 }).trim(),
+                // cpf must be at least 11 chars long and 14 chars max
+                check('cpf').isLength({ min: 11, max: 14 }).trim(),
+                // email must be an email
+                check('email').isEmail().normalizeEmail().trim(),
+                // password must be at least 6 chars long and 16 chars max
+                check('password').isLength({ min: 6, max: 16 }).matches(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,16})/).trim()
+            ], this.userController.updateUser);
         
         // Delete a specific user
         app.route('/api/users/:userId')

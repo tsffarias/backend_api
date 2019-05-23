@@ -13,9 +13,9 @@ export class UserController {
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            // return res.send(APIError.errInvalidQueryParameter());
+            return res.send(APIError.errInvalidQueryParameter());
             // Show the specific validation error
-            return res.status(422).json({ errors: errors.array() });
+            // return res.status(422).json({ errors: errors.array() });
         }
 
         let newUser = new UserMongooseModel(req.body);
@@ -50,7 +50,8 @@ export class UserController {
     }
 
     // Get a specific user
-    public getUserById (req: Request, res: Response) {           
+    public getUserById (req: Request, res: Response) {
+
         UserMongooseModel.findById(req.params.userId, (err, data) => {
             if (err){
                 if (err.name === 'CastError') {
@@ -68,6 +69,13 @@ export class UserController {
     }
 
     public getUserByCpf (req: Request, res: Response) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.send(APIError.errInvalidQueryParameter());
+            // Show the specific validation error
+            // return res.status(422).json({ errors: errors.array() });
+        }
         
         const cpf = req.params.cpf;
 
@@ -87,7 +95,15 @@ export class UserController {
         });
     }
 
-    public getUserByEmail (req: Request, res: Response) {           
+    public getUserByEmail (req: Request, res: Response) {
+        
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.send(APIError.errInvalidQueryParameter());
+            // Show the specific validation error
+            // return res.status(422).json({ errors: errors.array() });
+        }
+
         const email = req.params.email;
 
         UserMongooseModel.findOne({email: new RegExp('^'+email+'$', "i")}, (err, data) => {
@@ -107,7 +123,14 @@ export class UserController {
     }
 
     // Update a specific user
-    public updateUser (req: Request, res: Response) {  
+    public updateUser (req: Request, res: Response) {
+        
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.send(APIError.errInvalidQueryParameter());
+            // Show the specific validation error
+            // return res.status(422).json({ errors: errors.array() });
+        }
 
         UserMongooseModel.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, 
             (err, data) => {
