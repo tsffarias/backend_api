@@ -167,6 +167,13 @@ export class UserController {
         });
     }
 
+    // Get the total number of users
+    public countTotalUsers(req: Request, res: Response) {
+        UserMongooseModel.find().count((err, result) => {
+            return (err) ? res.send(err) : res.json(result);
+        });
+    }
+
     // Generate user dummy data
     public generateUserDummyData(req: Request, res: Response) {
         var data = [

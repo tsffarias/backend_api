@@ -57,6 +57,10 @@ export class Routes {
         // Delete a specific user
         app.route('/api/users/:userId')
             .delete(this.userController.deleteUser);
+
+        // Get the total number of users
+        app.route('/api/gettotalusers')
+            .get(this.userController.countTotalUsers)
         
         // generate user dummy data
         app.route('/api/dummy/users')
