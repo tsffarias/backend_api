@@ -17,6 +17,7 @@ export class UserController {
                 if (err.name === 'ValidationError') {
                     return res.send(APIError.errMissingBody());
                 }
+                res.send(err);
             }    
             res.json(PublicInfo.infoCreated({ data: data }));
         });
@@ -25,10 +26,18 @@ export class UserController {
     // Get all users
     public getUsers (req: Request, res: Response) {           
         UserMongooseModel.find({}, (err, data) => {
-            if (err){
+            if (err) {
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
                 res.send(err);
+            } else if (data.length) {
+                // there are user(s)
+                res.json(data);
+            } else {
+                // there are no users
+                return res.send(APIError.errNotFound());
             }
-            res.json(data);
         });
     }
 
@@ -36,9 +45,17 @@ export class UserController {
     public getUserById (req: Request, res: Response) {           
         UserMongooseModel.findById(req.params.userId, (err, data) => {
             if (err){
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
                 res.send(err);
+            } else if (data) {
+                // there is user
+                res.json(data);
+            } else {
+                // there is no user
+                return res.send(APIError.errNotFound());
             }
-            res.json(data);
         });
     }
 
@@ -55,9 +72,17 @@ export class UserController {
         UserMongooseModel.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, 
             (err, data) => {
             if (err){
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
                 res.send(err);
+            } else if (data) {
+                // user found
+                res.json(PublicInfo.infoUpdated({ data: data }));
+            } else {
+                // user not found
+                return res.send(APIError.errNotFound());
             }
-            res.json(PublicInfo.infoUpdated({data: data}));
         });
     }
 
@@ -65,12 +90,21 @@ export class UserController {
     public deleteUser (req: Request, res: Response) {           
         UserMongooseModel.findOneAndRemove({ _id: req.params.userId }, (err, data) => {
             if (err){
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
                 res.send(err);
+            } else if (data) {
+                // user found
+                res.json(PublicInfo.infoDeleted());
+            } else {
+                // user not found
+                return res.send(APIError.errNotFound());
             }
-            res.json(PublicInfo.infoDeleted());
         });
     }
 
+    // Generate user dummy data
     public generateUserDummyData (req: Request, res: Response) {     
         var data = [
             {

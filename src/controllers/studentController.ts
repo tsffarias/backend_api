@@ -11,6 +11,7 @@ export class StudentController {
             
         let newStudent = new StudentMongooseModel(req.body);
 
+        // Create a new student
         newStudent.save((err, data) => {
             if (err){
                 if (err.name === 'ValidationError') {
@@ -21,6 +22,7 @@ export class StudentController {
         });
     }
 
+    // Get all students
     public getStudents (req: Request, res: Response) {           
         StudentMongooseModel.find({}, (err, data) => {
             if (err){
@@ -30,6 +32,7 @@ export class StudentController {
         });
     }
 
+    // Get a specific student
     public getStudentById (req: Request, res: Response) {           
         StudentMongooseModel.findById(req.params.studentId, (err, data) => {
             if (err){
@@ -39,6 +42,7 @@ export class StudentController {
         });
     }
 
+    // Update a specific student
     public updateStudent (req: Request, res: Response) {           
         StudentMongooseModel.findOneAndUpdate({ _id: req.params.studentId }, req.body, { new: true }, 
             (err, data) => {
@@ -49,6 +53,7 @@ export class StudentController {
         });
     }
 
+    // Delete a specific student
     public deleteStudent (req: Request, res: Response) {           
         StudentMongooseModel.findOneAndRemove({ _id: req.params.studentId }, (err, data) => {
             if (err){
@@ -58,6 +63,7 @@ export class StudentController {
         });
     }
 
+    // Generate student dummy data
     public generateDummyData (req: Request, res: Response) {     
         var data = [
             {
