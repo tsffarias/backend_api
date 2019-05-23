@@ -59,12 +59,43 @@ export class UserController {
         });
     }
 
-    public getUserByCpf (req: Request, res: Response) {           
+    public getUserByCpf (req: Request, res: Response) {
         
+        const cpf = req.params.cpf;
+
+        UserMongooseModel.findOne({cpf: new RegExp('^'+cpf+'$', "i")}, (err, data) => {
+            if (err){
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
+                res.send(err);
+            } else if (data) {
+                // there is user
+                res.json(data);
+            } else {
+                // there is no user
+                return res.send(APIError.errNotFound());
+            }
+        });
     }
 
     public getUserByEmail (req: Request, res: Response) {           
-        
+        const email = req.params.email;
+
+        UserMongooseModel.findOne({email: new RegExp('^'+email+'$', "i")}, (err, data) => {
+            if (err){
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
+                res.send(err);
+            } else if (data) {
+                // there is user
+                res.json(data);
+            } else {
+                // there is no user
+                return res.send(APIError.errNotFound());
+            }
+        });
     }
 
     // Update a specific user
@@ -109,19 +140,19 @@ export class UserController {
         var data = [
             {
             "name":"Sally",
-            "cpf":"123.123.123-4",
-            "email":"test@gmail.com",
+            "cpf":"123.123.123-1",
+            "email":"test1@gmail.com",
             "password":"123Mudar@",
             "registrationDate": new Date(Date.now())
             },{
             "name":"Jason",
-            "cpf":"123.123.123-4",
+            "cpf":"123.123.123-2",
             "email":"test2@gmail.com",
             "password":"123Mudar@",
             "registrationDate": new Date(Date.now())
             },{
             "name":"Sue",
-            "cpf":"123.123.123-4",
+            "cpf":"123.123.123-3",
             "email":"test3@gmail.com",
             "password":"123Mudar@",
             "registrationDate": new Date(Date.now())
@@ -133,7 +164,7 @@ export class UserController {
             "registrationDate": new Date(Date.now())
             },{
             "name":"Fred",
-            "cpf":"123.123.123-4",
+            "cpf":"123.123.123-5",
             "email":"test5@gmail.com",
             "password":"123Mudar@",
             "registrationDate": new Date(Date.now())

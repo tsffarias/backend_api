@@ -21,9 +21,17 @@ export class Routes {
         app.route('/api/users')
             .post(this.userController.addNewUser);
 
-        // Get a specific user
+        // Get a specific user by ID
         app.route('/api/users/:userId')
             .get(this.userController.getUserById);
+
+        // Get a specific user by cpf
+        app.route('/api/getuserbycpf/:cpf')
+            .get(this.userController.getUserByCpf);
+
+        // Get a specific user by email
+        app.route('/api/getuserbyemail/:email')
+            .get(this.userController.getUserByEmail);
 
         // Update a specific user
         app.route('/api/users/:userId')
