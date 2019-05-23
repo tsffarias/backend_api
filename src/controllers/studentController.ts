@@ -26,9 +26,17 @@ export class StudentController {
     public getStudents (req: Request, res: Response) {           
         StudentMongooseModel.find({}, (err, data) => {
             if (err){
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
                 res.send(err);
+            } else if (data.length) {
+                // there are student(s)
+                res.json(data);
+            } else {
+                // there are no students
+                return res.send(APIError.errNotFound());
             }
-            res.json(data);
         });
     }
 
@@ -36,9 +44,17 @@ export class StudentController {
     public getStudentById (req: Request, res: Response) {           
         StudentMongooseModel.findById(req.params.studentId, (err, data) => {
             if (err){
+                if (err.name === 'CastError') {
+                    return res.send(APIError.errNotFound());
+                }
                 res.send(err);
+            } else if (data) {
+                // there is student
+                res.json(data);
+            } else {
+                // there is no student
+                return res.send(APIError.errNotFound());
             }
-            res.json(data);
         });
     }
 
